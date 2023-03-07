@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">dormitory_management_mobile</string>
+    <string name="service_name">dormitory_management</string>
+    <string name="card_title">stu_code</string>
+</resources>
