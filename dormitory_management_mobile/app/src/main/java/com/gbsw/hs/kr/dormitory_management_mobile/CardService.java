@@ -12,18 +12,15 @@ import java.util.Arrays;
 
 public class CardService extends HostApduService {
     private static final String TAG = "CardService";
-    // AID for our loyalty card service.
+
+    private static final String USER_ID = "000001";
     private static final String SAMPLE_LOYALTY_CARD_AID = "F222222222";
-    // ISO-DEP command HEADER for selecting an AID.
-    // Format: [Class | Instruction | Parameter 1 | Parameter 2]
     private static final String SELECT_APDU_HEADER = "00A40400";
-    // "OK" status word sent in response to SELECT AID command (0x9000)
-    private static final byte[] SELECT_OK_SW = HexStringToByteArray("9000");
-    // "UNKNOWN" status word sent in response to invalid APDU command (0x0000)
+    //todo str -> hex -> byte array 로 해야할 듯?
+    private static final byte[] SELECT_OK_SW = HexStringToByteArray("galaxy" + USER_ID);
     private static final byte[] UNKNOWN_CMD_SW = HexStringToByteArray("0000");
     private static final byte[] SELECT_APDU = BuildSelectApdu(SAMPLE_LOYALTY_CARD_AID);
 
-    ////////////////////////////////////////////////////////////////////////////////////
     private Messenger _handler;
 
     @Override
@@ -62,17 +59,34 @@ public class CardService extends HostApduService {
                 aid.length() / 2) + aid);
     }
 
-    public static byte[] HexStringToByteArray(String s) throws IllegalArgumentException {
-        int len = s.length();
-        if (len % 2 == 1) {
-            throw new IllegalArgumentException("Hex string must have even number of characters");
+    public static String byteArrayToHex(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : bytes) {
+            sb.append(String.format("%02X", b));
         }
-        byte[] data = new byte[len / 2]; // Allocate 1 byte per 2 hex characters
+        return sb.toString();
+    }
+
+    public static byte[] HexStringToByteArray(String hexString) throws IllegalArgumentException {
+        int len = hexString.length();
+        byte[] data = new byte[len / 2];
         for (int i = 0; i < len; i += 2) {
-            // Convert each character into a integer (base-16), then bit-shift into place
-            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
-                    + Character.digit(s.charAt(i+1), 16));
+            data[i / 2] = (byte) ((Character.digit(hexString.charAt(i), 16) << 4)
+                    | Character.digit(hexString.charAt(i + 1), 16));
         }
+
+        System.out.println(1212 + " " + hexString + ", " +Arrays.toString(data) + ", " + byteArrayToHex(data));
+
         return data;
+    }
+
+    public static String StrToHex(String s) throws IllegalArgumentException {
+        StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i < s.length(); i++) {
+            result.append(String.format("%02X ", (int) s.charAt(i)));
+        }
+
+        return result.toString();
     }
 }
