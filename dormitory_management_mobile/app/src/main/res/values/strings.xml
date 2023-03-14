@@ -2,4 +2,7 @@
     <string name="app_name">dormitory_management_mobile</string>
     <string name="service_name">dormitory_management</string>
     <string name="card_title">stu_code</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="top_app_name">경북소프트웨어고등학교 모바일 학생증</string>
 </resources>

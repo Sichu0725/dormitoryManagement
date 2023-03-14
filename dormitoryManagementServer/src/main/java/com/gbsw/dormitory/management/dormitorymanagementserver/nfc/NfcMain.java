@@ -8,10 +8,12 @@ import javax.smartcardio.*;
 import java.nio.ByteBuffer;
 import java.util.*;
 
-public class NfcMain {
+public class NfcMain implements Runnable {
     private static final String UNKNOWN_CMD_SW = "0000";
     private static final String SELECT_OK_SW = "9000";
 
+    private static final HttpRequest request = new HttpRequest();
+    @Override
     public void run() {
         CardTerminal terminal;
         CardChannel channel;
@@ -28,7 +30,14 @@ public class NfcMain {
 
                     // 값 받아오는 부분
                     //todo byte array -> hex -> str
-                    System.out.println(response);
+//                    System.out.println(response);
+                    //todo 방과후 시간에 쓰레드 테스트
+                    try {
+                        request.SendMsg(response.toString());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                 }
 
                 Thread.sleep(2000);
@@ -78,7 +87,7 @@ public class NfcMain {
         byte[] baReadUID = new byte[5];
         baReadUID = new byte[]{(byte) 0xFF, (byte) 0xCA, (byte) 0x00, (byte) 0x00, (byte) 0x00};
 
-        // tag의 uid (unique ID)를 얻은 후 출력
+        // tag의 uuid를 얻은 후 출력
         System.out.println("UID : " + SendCommand(baReadUID, channel));
 
         return channel;

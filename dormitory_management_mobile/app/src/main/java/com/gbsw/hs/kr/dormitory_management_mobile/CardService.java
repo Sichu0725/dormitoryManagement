@@ -7,16 +7,17 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.Arrays;
 
 public class CardService extends HostApduService {
     private static final String TAG = "CardService";
 
-    private static final String USER_ID = "000001";
     private static final String SAMPLE_LOYALTY_CARD_AID = "F222222222";
     private static final String SELECT_APDU_HEADER = "00A40400";
     //todo str -> hex -> byte array 로 해야할 듯?
+    private static final String USER_ID = "000001";
     private static final byte[] SELECT_OK_SW = HexStringToByteArray("galaxy" + USER_ID);
     private static final byte[] UNKNOWN_CMD_SW = HexStringToByteArray("0000");
     private static final byte[] SELECT_APDU = BuildSelectApdu(SAMPLE_LOYALTY_CARD_AID);
@@ -25,8 +26,6 @@ public class CardService extends HostApduService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        // UI thread 핸들 얻음
-        Bundle extras = intent.getExtras();
 
         // 서비스를 앱 종료시까지 계속 실행상태로
         return START_STICKY;
@@ -39,7 +38,9 @@ public class CardService extends HostApduService {
         if (Arrays.equals(SELECT_APDU, commandApdu)) {
             Log.i(TAG, "Application selected");
 
-            Counter.AddOne();
+            // NFC 찍혔을때
+
+            Toast.makeText(this, "NFC tag!", Toast.LENGTH_SHORT).show();
 
             return SELECT_OK_SW;
         } else {
