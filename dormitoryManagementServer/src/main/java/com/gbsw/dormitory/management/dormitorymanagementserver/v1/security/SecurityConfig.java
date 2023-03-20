@@ -42,6 +42,7 @@ public class SecurityConfig {
 
                 .and()
                 .authorizeRequests()
+                .requestMatchers("/api/v1/user/test").hasAnyRole("USER", "ADMIN")
                 .anyRequest().permitAll()
 
                 .and().logout().permitAll()
