@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+<!--대충 로고 박고 밑에 로그인 글씨 적고 form두개 놔두자 끝-->
+</LinearLayout>
