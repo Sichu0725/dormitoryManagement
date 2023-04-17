@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="top_app_name">경북소프트웨어고등학교 모바일 학생증</string>
+    <string name="application_logo">Application logo</string>
+    <string name="app_title">경북소프트웨어고등학교\n기숙사 학생 관리 프로그램</string>
 </resources>

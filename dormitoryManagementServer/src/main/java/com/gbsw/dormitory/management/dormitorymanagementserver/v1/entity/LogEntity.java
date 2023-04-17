@@ -17,7 +17,6 @@ public class LogEntity {
     private int stu_code;
     @Column(nullable = false)
     private short inOut; // 0: 기숙사 입소 1: 기숙사 외출
-
     @CreatedDate
     @Column(updatable = false, nullable = false)
     private LocalDateTime createdAt;

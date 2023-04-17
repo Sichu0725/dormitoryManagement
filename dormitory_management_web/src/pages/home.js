@@ -1,5 +1,7 @@
+import Table from '../components/table'
+
 const Home = () => {
-  return <>홈임</>
+  return <Table />
 }
 
 export default Home

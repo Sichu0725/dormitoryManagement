@@ -1,11 +1,10 @@
-package com.gbsw.hs.kr.dormitory_management_mobile;
+package com.gbsw.hs.kr.dormitory_management_mobile.fragment;
 
 import static com.gbsw.hs.kr.dormitory_management_mobile.R.*;
 
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.annotation.SuppressLint;
-import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -18,8 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
+import com.gbsw.hs.kr.dormitory_management_mobile.service.CardService;
 
 public class student_card_fragment extends Fragment {
 

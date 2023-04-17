@@ -1,4 +1,4 @@
-package com.gbsw.hs.kr.dormitory_management_mobile;
+package com.gbsw.hs.kr.dormitory_management_mobile.service;
 
 import android.content.Intent;
 import android.nfc.cardemulation.HostApduService;
@@ -22,7 +22,6 @@ public class CardService extends HostApduService {
     private static final byte[] UNKNOWN_CMD_SW = HexStringToByteArray("0000");
     private static final byte[] SELECT_APDU = BuildSelectApdu(SAMPLE_LOYALTY_CARD_AID);
 
-    private Messenger _handler;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -40,7 +39,7 @@ public class CardService extends HostApduService {
 
             // NFC 찍혔을때
 
-            Toast.makeText(this, "NFC tag!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "NFC tag! uuid : " + Arrays.toString(SELECT_OK_SW), Toast.LENGTH_SHORT).show();
 
             return SELECT_OK_SW;
         } else {

@@ -1,17 +1,11 @@
 package com.gbsw.dormitory.management.dormitorymanagementserver.nfc;
 
-import org.apache.commons.codec.DecoderException;
-import org.apache.commons.codec.binary.Hex;
-
 import javax.smartcardio.*;
 
 import java.nio.ByteBuffer;
 import java.util.*;
 
 public class NfcMain implements Runnable {
-    private static final String UNKNOWN_CMD_SW = "0000";
-    private static final String SELECT_OK_SW = "9000";
-
     private static final HttpRequest request = new HttpRequest();
     @Override
     public void run() {
@@ -29,11 +23,9 @@ public class NfcMain implements Runnable {
                     String response = selectCardAID(channel);
 
                     // 값 받아오는 부분
-                    //todo byte array -> hex -> str
 //                    System.out.println(response);
-                    //todo 방과후 시간에 쓰레드 테스트
                     try {
-                        request.SendMsg(response.toString());
+                        request.SendMsg(response);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -42,10 +34,8 @@ public class NfcMain implements Runnable {
 
                 Thread.sleep(2000);
 
-            } catch (CardException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } catch (CardException | InterruptedException e) {
+//                e.printStackTrace();
             }
         }
     }
@@ -59,7 +49,7 @@ public class NfcMain implements Runnable {
 
         //Print list of terminals
         for(CardTerminal ter:terminals) {
-            System.out.println("Found: "  +ter.getName().toString());
+            System.out.println("Found: "  + ter.getName());
             terminal = terminals.get(0);// We assume just one is connected
         }
 
@@ -87,7 +77,7 @@ public class NfcMain implements Runnable {
         byte[] baReadUID = new byte[5];
         baReadUID = new byte[]{(byte) 0xFF, (byte) 0xCA, (byte) 0x00, (byte) 0x00, (byte) 0x00};
 
-        // tag의 uuid를 얻은 후 출력
+        // tag의 uuid를 얻은 후 출력 Log용
         System.out.println("UID : " + SendCommand(baReadUID, channel));
 
         return channel;
@@ -102,7 +92,7 @@ public class NfcMain implements Runnable {
     }
 
     public static String SendCommand(byte[] cmd, CardChannel channel) {
-        String response = "";
+        StringBuilder response = new StringBuilder();
         byte[] baResp = new byte[258];
         ByteBuffer bufCmd = ByteBuffer.wrap(cmd);
         ByteBuffer bufResp = ByteBuffer.wrap(baResp);
@@ -115,11 +105,11 @@ public class NfcMain implements Runnable {
 //            ex.printStackTrace();
         }
 
-        System.out.print("뷁 : ");
+        System.out.print("response : ");
         for (int i = 0; i < output; i++) {
-            response += String.format("%02X", baResp[i]);
+            response.append(String.format("%02X", baResp[i]));
         }
 
-        return response;
+        return response.toString();
     }
 }

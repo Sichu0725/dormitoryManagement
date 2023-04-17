@@ -1,6 +1,6 @@
 import logo from '../assets/symbol-solid.png'
 
-const Header = () => {
+const Header = ({ isLoggedIn }) => {
   return (
     <div className="header">
       <div>
@@ -14,9 +14,9 @@ const Header = () => {
 
       <ul>
         <li>메인</li>
-        <li>검색</li>
+        {/* <li>검색</li> */}
         <li>공지</li>
-        <li>로그인</li>
+        {isLoggedIn ? <li>로그인</li> : <li>로그아웃</li>}
       </ul>
     </div>
   )

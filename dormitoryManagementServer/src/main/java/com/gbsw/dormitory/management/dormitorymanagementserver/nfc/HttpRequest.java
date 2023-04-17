@@ -3,7 +3,6 @@ package com.gbsw.dormitory.management.dormitorymanagementserver.nfc;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
@@ -19,7 +18,7 @@ public class HttpRequest {
     private static final String SERVER_URL = "http://localhost:8080";
 
 
-    public boolean SendMsg(String uuid) throws Exception {
+    public void SendMsg(String uuid) throws Exception {
 
         //todo 갤럭시의 경우 uuid : FAFAFF000001 ( FAFAFF가 인식용 뒤 숫자가 idx )
 
@@ -47,7 +46,7 @@ public class HttpRequest {
         String returnMsg = reader.readLine();
 
 
-        JSONObject jObj = new JSONObject(returnMsg.toString());
+        JSONObject jObj = new JSONObject(returnMsg);
 
         System.out.println("jObj = " + jObj);
 
@@ -57,11 +56,8 @@ public class HttpRequest {
         for (int i = 0; i < list.length(); i++) {
             JSONObject data = (JSONObject) list.get(i);
             System.out.println(data);
-
-
         }
 
-        return true;
     }
 
 }
