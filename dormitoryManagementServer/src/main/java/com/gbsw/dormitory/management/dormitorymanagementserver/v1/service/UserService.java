@@ -27,6 +27,7 @@ public class UserService {
     private final JwtProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
+
     @Transactional
     public JwtInfoDto login(String id, String password) {
 
@@ -39,11 +40,17 @@ public class UserService {
 
     public UserEntity userTag(String uuid) {
         // 학번을 받으면 그 학번에 해당하는 학생의 is_in 변경
-        UserEntity userEntity = userRepository.findByUuid(uuid).get(0);
+        try {
 
-        userEntity.set_in(!userEntity.is_in());
-        userRepository.save(userEntity);
-        return userEntity;
+            UserEntity userEntity = userRepository.findByUuid(uuid).get(0);
+            userEntity.set_in(!userEntity.is_in());
+            userRepository.save(userEntity);
+
+            return userEntity;
+
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public List<UserEntity> userList() {

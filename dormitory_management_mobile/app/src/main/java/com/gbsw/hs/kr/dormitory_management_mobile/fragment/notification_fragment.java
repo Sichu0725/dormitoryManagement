@@ -1,6 +1,7 @@
 package com.gbsw.hs.kr.dormitory_management_mobile.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,18 +15,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.gbsw.hs.kr.dormitory_management_mobile.NotificationContentsActivity;
 import com.gbsw.hs.kr.dormitory_management_mobile.R;
 import com.gbsw.hs.kr.dormitory_management_mobile.adapter.RecyclerViewAdapter;
-import com.gbsw.hs.kr.dormitory_management_mobile.model.JWTModel;
 import com.gbsw.hs.kr.dormitory_management_mobile.model.NotificationModel;
 import com.gbsw.hs.kr.dormitory_management_mobile.model.ResponseModel;
 import com.gbsw.hs.kr.dormitory_management_mobile.service.ApiService;
-import com.gbsw.hs.kr.dormitory_management_mobile.service.PreferenceManager;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -36,16 +36,16 @@ public class notification_fragment extends Fragment {
 
     private RecyclerView recyclerView;
     private RecyclerViewAdapter adapter;
-    private final ArrayList<NotificationModel> items = new ArrayList<>();
     private View v;
+
     private int pageIdx = 0;
+    private final ArrayList<NotificationModel> items = new ArrayList<>();
     private boolean lastItem = false;
+    private boolean isLoading = false;
 
     private final ApiService apiService = ApiService.getInstance();
     private final CompositeDisposable disposable = new CompositeDisposable();
 
-
-    private boolean isLoading = false;
 
     @SuppressLint("MissingInflatedId")
     @Nullable
@@ -54,7 +54,6 @@ public class notification_fragment extends Fragment {
                                 @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_notification, container, false);
         recyclerView = v.findViewById(R.id.recyclerView);
-
 
         if (items.size() == 0)
             fetchNotification(pageIdx++);
@@ -67,6 +66,29 @@ public class notification_fragment extends Fragment {
     private void initAdapter() {
         adapter = new RecyclerViewAdapter(items);
         LinearLayoutManager layoutManager = new LinearLayoutManager(v.getContext());
+
+        adapter.setOnItemClickListener(new RecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Long idx) {
+                Intent intent = new Intent(v.getContext(), NotificationContentsActivity.class);
+
+                intent.putExtra("notificationIdx", idx);
+
+
+                startActivity(intent);
+                //todo 공지 상세보기 페이지로 이동
+            }
+        });
+
+        adapter.setOnLongItemClickListener(new RecyclerViewAdapter.OnLongItemClickListener() {
+            @Override
+            public void onLongItemClick(int pos) {
+                
+                //todo 오래 누를시 이벤트
+//                Toast.makeText(v.getContext(), "onLongItemClick position : " + pos, Toast.LENGTH_SHORT).show();
+            }
+        });
+
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
     }
@@ -104,7 +126,7 @@ public class notification_fragment extends Fragment {
 
     public void fetchNotification(int page) {
         disposable.add(apiService
-            .getNotification(page)
+            .getNotificationList(page)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(new DisposableSingleObserver<ResponseModel<List<NotificationModel>>>() {
@@ -116,7 +138,7 @@ public class notification_fragment extends Fragment {
                 @SuppressLint("NotifyDataSetChanged")
                 @Override
                 public void onSuccess(ResponseModel<List<NotificationModel>> listResponseModel) {
-                    Log.i("fetch start", "fetch starty");
+                    Log.i("fetch start", "fetch start");
                     items.add(null);
                     adapter.notifyItemInserted(items.size() - 1);
 

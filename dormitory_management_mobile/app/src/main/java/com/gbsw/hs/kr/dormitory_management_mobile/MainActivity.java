@@ -2,6 +2,7 @@ package com.gbsw.hs.kr.dormitory_management_mobile;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -67,8 +68,8 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    private void setLoginAcitivy() {
-        setContentView(R.layout.activity_login);
+    public void setLoginAcitivy() {
+            setContentView(R.layout.activity_login);
 
 
         final EditText editId = findViewById(R.id.editId);
@@ -145,7 +146,17 @@ public class MainActivity extends AppCompatActivity{
                 return true;
             }
         });
-        setFrag(0);
+
+        try {
+            Intent intent = getIntent();
+
+            if (intent.getStringExtra("frag").equals("notification fragement"))
+                setFrag(1);
+            else
+                setFrag(0);
+        } catch (Exception e) {
+            setFrag(0);
+        }
     }
 
     private void fetchLogin(HashMap<String, Object> param) {

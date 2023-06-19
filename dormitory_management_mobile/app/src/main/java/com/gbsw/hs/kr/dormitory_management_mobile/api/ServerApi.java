@@ -18,5 +18,8 @@ public interface ServerApi {
     Single<ResponseModel<JWTModel>> login(@Body HashMap<String, Object> param);
 
     @GET("api/v1/notification/list")
-    Single<ResponseModel<List<NotificationModel>>> getNotification(@Query("page") int page);
+    Single<ResponseModel<List<NotificationModel>>> getNotificationList(@Query("page") int page);
+
+    @GET("api/v1/notification/get-notification")
+    Single<ResponseModel<NotificationModel>> getNotification(@Query("idx") Long idx);
 }

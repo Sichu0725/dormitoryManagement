@@ -10,40 +10,43 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig {
+public class SecurityConfig implements WebMvcConfigurer {
 
 
 
     private final JwtProvider jwtTokenProvider;
 
-
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**").allowedMethods("*");
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
+        http.csrf().disable().cors().disable();
         http
+            .httpBasic().disable()
+            .formLogin().disable()
 
-                .httpBasic().disable()
-                .csrf().disable()
-                .cors().disable()
-                .formLogin().disable()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+            .authorizeHttpRequests()
+            .requestMatchers("/api/v1/notification/add-notification").hasAnyRole("ADMIN")
+            .anyRequest().permitAll()
 
-                .and()
-                .authorizeRequests()
-                .requestMatchers("/api/v1/user/test").hasAnyRole("USER", "ADMIN")
-                .anyRequest().permitAll()
+            .and().logout().permitAll()
 
-                .and().logout().permitAll()
+            .and()
 
-                .and()
-
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
 

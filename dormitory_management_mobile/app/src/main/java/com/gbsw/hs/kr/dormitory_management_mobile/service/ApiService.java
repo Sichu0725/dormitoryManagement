@@ -14,7 +14,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiService {
-    private String BASE_URL = "http://172.16.0.157:8080/";
+    private String BASE_URL = "http://172.16.1.197:8080/";
 
     private static ApiService instance;
 
@@ -36,8 +36,12 @@ public class ApiService {
         return api.login(param);
     }
 
-    public Single<ResponseModel<List<NotificationModel>>> getNotification(int page) {
-        return api.getNotification(page);
+    public Single<ResponseModel<List<NotificationModel>>> getNotificationList(int page) {
+        return api.getNotificationList(page);
+    }
+
+    public Single<ResponseModel<NotificationModel>> getNotification(Long idx) {
+        return api.getNotification(idx);
     }
 
 

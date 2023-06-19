@@ -22,16 +22,12 @@ public class HttpRequest {
 
         //todo 갤럭시의 경우 uuid : FAFAFF000001 ( FAFAFF가 인식용 뒤 숫자가 idx )
 
-        JSONObject json = new JSONObject();
-        json.put("uuid", uuid);
-
 
         HttpURLConnection conn = null;
-        URL url = new URL(SERVER_URL + "/api/v1/user/nfcTag");
+        URL url = new URL(SERVER_URL + "/api/v1/user/nfcTag?uuid="+uuid);
         conn = (HttpURLConnection) url.openConnection();
 
-        conn.setRequestMethod("POST");
-        conn.setRequestProperty("Content-Type", "application-json");
+        conn.setRequestMethod("GET");
 
 
         conn.setDoOutput(true);

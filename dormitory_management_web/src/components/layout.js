@@ -1,11 +1,12 @@
-import Header from './header'
+import MainHeader from './header'
+import { Content } from '@carbon/react'
 
-const Layout = ({ children }) => {
+const Layout = ({ children, logout }) => {
   return (
-    <div className="layout">
-      <Header />
-      {children}
-    </div>
+    <>
+      <MainHeader logout={logout} />
+      <Content children={children} />
+    </>
   )
 }
 

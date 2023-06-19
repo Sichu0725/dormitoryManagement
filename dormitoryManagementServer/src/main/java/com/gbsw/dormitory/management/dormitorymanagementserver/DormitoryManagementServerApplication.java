@@ -20,7 +20,7 @@ public class DormitoryManagementServerApplication {
 //		} catch (Exception e) {
 //			System.out.println("nfc 장치가 인식되지 않았습니다.");
 //			assert nfc_thread != null;
-//			nfc_thread.interrupt();
+//			nfc_thread.interrupt();	
 //		}
 
 

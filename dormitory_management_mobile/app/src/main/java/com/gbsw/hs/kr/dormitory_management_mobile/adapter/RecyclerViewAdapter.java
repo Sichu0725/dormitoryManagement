@@ -1,5 +1,6 @@
 package com.gbsw.hs.kr.dormitory_management_mobile.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +21,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private final List<NotificationModel> items;
 
+    private static OnItemClickListener onItemClickListener = null;
+    private static OnLongItemClickListener onLongItemClickListener = null;
+
     public RecyclerViewAdapter(List<NotificationModel> items) {
         this.items = items;
+
     }
 
     @NonNull
@@ -62,24 +67,51 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private void populateItemRows(ItemViewHolder holder, int position) {
         // todo list item에 데이터 바인딩 하는 곳
         NotificationModel item = items.get(position);
-        holder.setItem(item.getTitle(), item.getCreatedAt());
+        holder.setItem(item.getTitle(), item.getCreatedAt(), item.getIdx());
     }
 
     private static class ItemViewHolder extends RecyclerView.ViewHolder {
         // todo 데이터 바인딩 하는 클래스
         private final TextView title;
         private final TextView createdAt;
-
+        private Long idx;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             this.title = itemView.findViewById(R.id.notifyTitle);
             this.createdAt = itemView.findViewById(R.id.createdAt);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        if (onItemClickListener != null) {
+                            onItemClickListener.onItemClick(idx);
+                        }
+                    }
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        if (onLongItemClickListener != null) {
+                            onLongItemClickListener.onLongItemClick(position);
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+            });
         }
 
-        public void setItem(String title, String createdAt) {
+        public void setItem(String title, String createdAt, Long idx) {
             this.title.setText(title);
             this.createdAt.setText(createdAt);
+            this.idx = idx;
         }
     }
 
@@ -89,5 +121,25 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             super(itemView);
             ProgressBar progressBar = itemView.findViewById(R.id.progressBar);
         }
+    }
+
+    public interface OnItemClickListener {
+        // item click listener setting interface
+        void onItemClick(Long idx);
+    }
+
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        onItemClickListener = listener;
+    }
+
+
+    public interface OnLongItemClickListener {
+        void onLongItemClick(int pos);
+    }
+
+
+    public void setOnLongItemClickListener(OnLongItemClickListener listener) {
+        onLongItemClickListener = listener;
     }
 }

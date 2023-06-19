@@ -14,6 +14,14 @@ public class NotificationController {
     @Autowired
     NotificationService notificationService;
 
+    @GetMapping("all-list")
+    public ResponseDto allListNotify() {
+        ResponseDto res = ResponseDto.builder().status(200).build();;
+
+        res.setData(notificationService.allNotificationList());
+
+        return res;
+    }
     @GetMapping("list")
     public ResponseDto listNotify(@RequestParam(defaultValue = "0") int page) {
         System.out.println("fetch notify" + page);
@@ -25,6 +33,7 @@ public class NotificationController {
 
     @GetMapping("get-notification")
     public ResponseDto getNotification(@RequestParam Long idx) {
+        System.out.println("1");
         ResponseDto res = ResponseDto.builder().status(200).build();;
 
         res.setData(notificationService.notificationByIdx(idx));

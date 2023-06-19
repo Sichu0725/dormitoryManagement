@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:backgroundTint="@color/white"
+    android:background="@color/white"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5sp">
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#00000000"
+            android:contentDescription="@string/back"
+            android:minHeight="48dp"
+            android:src="@drawable/baseline_chevron_left_24" />
+        <TextView
+            android:id="@+id/notificationTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/demo_title"
+            android:paddingVertical="6dp"
+            android:paddingHorizontal="10sp"
+            android:textSize="25sp"
+            android:textAlignment="textStart"
+            android:textColor="@color/black"/>
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/notificationCreatedAt"
+        android:paddingHorizontal="15dp"
+        android:paddingVertical="5dp"
+        android:textAlignment="textEnd"
+        android:text="@string/demo_createdAt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#aaa"/>
+
+    <View style="@style/Divider"/>
+
+    <TextView
+        android:id="@+id/notificationContents"
+        android:padding="15dp"
+        android:textSize="16sp"
+        android:text="@string/demo_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="@color/black"/>
+
+</LinearLayout>
